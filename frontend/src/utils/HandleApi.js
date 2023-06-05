@@ -11,12 +11,13 @@ const getAllToDo = (setToDo) => {
         })
 }
 
-const addToDo = (text, setText, setToDo) => {
+const addToDo = (title,text,setTitle, setText, setToDo) => {
 
     axios
-        .post(`${baseUrl}/save`, { text })
+        .post(`${baseUrl}/save`, { title,text })
         .then((data) => {
             console.log(data);
+            setTitle("")
             setText("")
             getAllToDo(setToDo)
         })
@@ -24,12 +25,13 @@ const addToDo = (text, setText, setToDo) => {
 
 }
 
-const updateToDo = (toDoId,text, setToDo, setText, setIsUpdating) => {
+const updateToDo = (toDoId,title,text,setToDo,setTitle, setText, setIsUpdating) => {
 
     axios
-        .post(`${baseUrl}/update`, { _id: toDoId, text})
+        .post(`${baseUrl}/update`, { _id: toDoId,title, text})
         .then((data) => {
             console.log(data);
+            setTitle("")
             setText("")
             setIsUpdating(false)
             getAllToDo(setToDo)

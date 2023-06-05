@@ -5,6 +5,7 @@ import { getAllToDo, addToDo, updateToDo, deleteToDo } from "./utils/HandleApi";
 
 function App() {
   const [toDo, setToDo] = useState([]);
+  const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [toDoId, setToDoId] = useState("");
@@ -13,11 +14,14 @@ function App() {
     getAllToDo(setToDo);
   }, []);
 
-  const updateMode = (_id, text) => {
+  const updateMode = (_id, title,text) => {
     setIsUpdating(true)
+    setTitle(title);
     setText(text);
     setToDoId(_id); 
   };
+
+  
 
   const formatDate = (dateString) => {
     const dateObject = new Date(dateString);
@@ -34,9 +38,15 @@ function App() {
 
       <div className="container">
         <div className="top">
+        <input
+            type="text"
+            placeholder="Add Title..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <input
             type="text"
-            placeholder="Add ToDo..."
+            placeholder="Add Description..."
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
@@ -45,8 +55,8 @@ function App() {
             className="add"
             onClick={
               isUpdating
-                ? () => updateToDo(toDoId,text, setToDo, setText, setIsUpdating)
-                : () => addToDo( text,setText, setToDo)
+                ? () => updateToDo(toDoId,title,text, setToDo,setTitle, setText, setIsUpdating)
+                : () => addToDo( title,text,setTitle,setText, setToDo)
             }
           >
             {isUpdating ? "Update" : "Add"}
@@ -57,9 +67,10 @@ function App() {
           {toDo.map((item) => (
             <ToDo
               key={item._id}
+              title={item.title}
               text={item.text}
               date={formatDate(item.date)}
-              updateMode={() => updateMode(item._id,item.text, item.date)}
+              updateMode={() => updateMode(item._id,item.title,item.text, item.date)}
               deleteToDo={() => deleteToDo(item._id, setToDo)}
             />
           ))}

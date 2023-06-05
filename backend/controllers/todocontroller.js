@@ -5,11 +5,11 @@ module.exports.getToDo = async(req,res) => {
 }
 
 module.exports.saveToDo=async(req,res)=>{
-    const { text } =req.body
+    const { title,text } =req.body
 
     todomodel
         
-        .create({ text })
+        .create({ title,text })
         .then((data) => {
             console.log("added successfully...");
             console.log(data)
@@ -17,11 +17,11 @@ module.exports.saveToDo=async(req,res)=>{
         })
     }
     module.exports.updateToDo =async (req, res) => {
-        const { _id,text } = req.body;
+        const { _id,title,text } = req.body;
         try {
             const updatedToDo = await todomodel.findByIdAndUpdate(
               _id,
-              { text, date: new Date() }, // Update the 'text' and 'date' fields
+              { title,text, date: new Date() }, // Update the 'text' and 'date' fields
               { new: true }
             );
             res.send(updatedToDo);
